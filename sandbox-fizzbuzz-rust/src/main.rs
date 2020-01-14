@@ -1,6 +1,6 @@
-type UnitResult = Result<(), Box<dyn std::error::Error>>;
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
-fn main() -> UnitResult {
+fn main() -> Result<()> {
     let n = std::env::args().nth(1).ok_or("None")?.parse::<u128>()?;
 
     let _ = (1..n + 1).for_each(|i| {
