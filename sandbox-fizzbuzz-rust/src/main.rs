@@ -1,7 +1,7 @@
-type Error = Box<dyn std::error::Error + Send + Sync>;
-type Result<T, E = Error> = std::result::Result<T, E>;
-
 use std::env;
+
+type Error = Box<dyn std::error::Error + Send + Sync + 'static>;
+type Result<T, E = Error> = std::result::Result<T, E>;
 
 fn main() -> Result<()> {
     let n = env::args().nth(1).unwrap().parse::<u128>()?;
@@ -13,11 +13,11 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn fizzbuzz(number: u128) -> String {
-    match number {
-        n if n % 3 == 0 && n % 5 != 0 => "Fizz".to_owned(),
-        n if n % 5 == 0 && n % 3 != 0 => "Buzz".to_owned(),
-        n if n % 3 == 0 && n % 5 == 0 => "FizzBuzz".to_owned(),
-        n => n.to_string(),
+fn fizzbuzz(n: u128) -> String {
+    match (n % 3, n % 5) {
+        (0, 0) => "FizzBuzz".to_owned(),
+        (0, _) => "Fizz".to_owned(),
+        (_, 0) => "Buzz".to_owned(),
+        _ => n.to_string(),
     }
 }
